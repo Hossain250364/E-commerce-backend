@@ -8,16 +8,23 @@ const router = require('./routes')
 
 const app = express()
 app.use(cors({
-    origin : process.env.FRONTEND_URL,
+    origin : process.env.FRONTEND_URL || '*',
     credentials : true
 }))
 app.use(express.json())
 app.use(cookieParser())
 
+app.get('/', (req, res) => {
+    res.json({
+        message: "Server is running successfully!",
+        status: "active"
+    })
+})
+
 app.use("/api",router)
 
-const PORT = 8080 || process.env.PORT
-
+//const PORT = 8080 || process.env.PORT
+const PORT =  process.env.PORT || 8080
 
 connectDB().then(()=>{
     app.listen(PORT,()=>{
